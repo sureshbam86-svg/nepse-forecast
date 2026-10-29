@@ -1,121 +1,396 @@
-<!doctype html>
-<html lang="ne"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NEPSE Truth-Based Research Lab</title>
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEPSE Forecast Nepal</title>
 <style>
-:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#dbe2ed;--blue:#155eef;--green:#067647;--red:#b42318;--amber:#93370d}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif}header{background:linear-gradient(120deg,#102a56,#155eef);color:#fff;padding:23px 14px}.wrap{max-width:1150px;margin:auto}h1{margin:0 0 7px;font-size:25px}header p{margin:0;line-height:1.5;color:#e5edff}main{max-width:1150px;margin:16px auto;padding:0 12px 32px}.alert{padding:13px 14px;border-radius:12px;background:#fff8e6;border:1px solid #f2d27c;line-height:1.6;font-size:14px;margin-bottom:14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px}.stat span{font-size:12px;color:var(--muted)}.stat b{display:block;font-size:20px;margin-top:5px;overflow-wrap:anywhere}h2{font-size:18px;margin:0 0 12px}.controls{display:grid;grid-template-columns:2fr 1fr auto auto;gap:9px;align-items:end}label{font-size:12px;font-weight:700;display:block;margin-bottom:5px;color:#344054}input,select,button{font:inherit;border-radius:9px;border:1px solid #cbd5e1;padding:10px;background:#fff;color:var(--ink);width:100%;min-width:0}button{font-weight:700;cursor:pointer}.primary{background:var(--blue);border-color:var(--blue);color:white}.secondary{background:#eaf0ff;color:#1849a9;border-color:#d4e0ff}.status{font-size:13px;margin:10px 0;color:#475467;line-height:1.5}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;min-width:680px;font-size:13px}th,td{text-align:right;padding:10px 8px;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#f8fafc;color:#475467;font-size:12px}th:first-child,td:first-child{text-align:left}.pos{color:var(--green);font-weight:700}.neg{color:var(--red);font-weight:700}.badge{display:inline-block;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:750;background:#eaf0ff;color:#1849a9}.good{background:#dcfae6;color:#067647}.warn{background:#fef0c7;color:#93370d}.bad{background:#fee4e2;color:#b42318}.foot{font-size:12px;line-height:1.65;color:var(--muted)}.horizon{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.forecast{border:1px solid var(--line);border-radius:11px;padding:11px;background:#fbfcff}.forecast h3{font-size:14px;margin:0 0 8px}.forecast strong{font-size:17px;display:block}.forecast small{display:block;color:var(--muted);line-height:1.45;margin-top:5px}.meter{height:7px;background:#e5eaf2;border-radius:9px;overflow:hidden;margin-top:8px}.meter i{display:block;height:100%;background:#155eef}.tag{font-size:11px;color:var(--muted)}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.controls{grid-template-columns:1fr 1fr}.horizon{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:22px}}@media(max-width:420px){.controls{grid-template-columns:1fr}.horizon{grid-template-columns:1fr 1fr}}
-</style></head><body>
-<header><div class="wrap"><h1>📊 NEPSE Truth-Based Research Lab</h1><p>तथ्यमा आधारित मूल्य इतिहास, जोखिम दायरा र १ हप्तादेखि १२ महिनासम्मका परिदृश्य</p></div></header>
+body{font-family:Arial,sans-serif;background:#f1f5f9;margin:0;color:#172033}
+header{background:#123675;color:white;padding:22px;text-align:center}
+main{max-width:1000px;margin:20px auto;padding:12px}
+.card{background:white;padding:18px;margin-bottom:16px;border-radius:12px;box-shadow:0 2px 8px #0001}
+h2{font-size:20px}
+input,select,button{padding:12px;border:1px solid #ccd3df;border-radius:7px;font-size:15px;box-sizing:border-box}
+input,select{width:100%;margin:5px 0 12px}
+button{background:#155eef;color:white;cursor:pointer;border:0;margin:5px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat{background:#f8fafc;padding:14px;border-radius:8px;overflow-wrap:anywhere}
+.stat span{color:#667085;font-size:13px}
+.stat strong{display:block;font-size:21px;margin-top:8px}
+.status{padding:12px;background:#eff6ff;border-radius:8px;line-height:1.6;overflow-wrap:anywhere}
+.good{color:green}.bad{color:#c00}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}
+th{background:#eff6ff}
+.tablewrap{overflow-x:auto}
+.small{font-size:13px;line-height:1.7;color:#667085}
+@media(max-width:600px){main{padding:8px}.card{padding:12px}header{padding:16px}}
+</style>
+</head>
+<body>
+
+<header>
+<h1>📊 NEPSE Forecast Nepal</h1>
+<p>सेयरको मूल्य इतिहास, जोखिम र सम्भावित मूल्य विश्लेषण</p>
+</header>
+
 <main>
-<div class="alert"><b>सत्य र सीमाबारे:</b> सेयरको भविष्यको मूल्य ठ्याक्कै थाहा पाउने वैज्ञानिक तरिका छैन। यो एपले ऐतिहासिक दैनिक मूल्यबाट औसत प्रतिफल र अस्थिरता गणना गरी सम्भावित दायरा देखाउँछ—निश्चित भविष्यवाणी होइन। डेटा सार्वजनिक तेस्रो-पक्ष स्रोतबाट आउँछ, आधिकारिक ब्रोकर/NEPSE टिक-लाइभ फिड होइन। बोनस/हकप्रद जस्ता corporate action ले समायोजन नभएको मूल्य इतिहास बिगार्न सक्छ।</div>
+<div class="card">
+<h2>⚠️ महत्त्वपूर्ण जानकारी</h2>
+<p>यो एपले सार्वजनिक स्रोतबाट उपलब्ध ऐतिहासिक तथ्याङ्क प्रयोग गरी सम्भावित मूल्य दायरा गणना गर्ने प्रयास गर्छ। यो निश्चित भविष्यवाणी वा खरिद-बिक्री सल्लाह होइन। डेटा स्रोत बन्द भएमा वा उपलब्ध नभएमा तथ्याङ्क देखिँदैन।</p>
+</div>
+
+<div class="card">
+<h2>१. कम्पनी छान्नुहोस्</h2>
+
+<label>कम्पनीको Symbol</label>
+<input id="symbol" list="symbols" placeholder="जस्तै NABIL, NICA, HDL">
+<datalist id="symbols"></datalist>
+
+<label>विश्लेषण विधि</label>
+<select id="mode">
+<option value="normal">ऐतिहासिक औसत</option>
+<option value="safe">सावधानीपूर्ण विश्लेषण</option>
+</select>
+
+<button id="loadBtn">कम्पनीको डेटा हेर्नुहोस्</button>
+<button id="refreshBtn">डेटा पुनःलोड गर्नुहोस्</button>
+
+<div id="status" class="status">डेटा लोड गर्ने प्रयास भइरहेको छ...</div>
+</div>
+
+<div class="card">
+<h2>२. बजार तथ्याङ्क</h2>
 <div class="grid">
-<div class="card stat"><span>बजार डेटामा भेटिएका सेयर</span><b id="nStocks">—</b></div>
-<div class="card stat"><span>छानिएको सेयरको इतिहास</span><b id="nRows">—</b></div>
-<div class="card stat"><span>डेटाको अन्तिम मिति</span><b id="asof">—</b></div>
-<div class="card stat"><span>स्वचालित अपडेट</span><b style="font-size:16px">३० मिनेटमा प्रयास</b></div>
+<div class="stat"><span>कम्पनी</span><strong id="company">—</strong></div>
+<div class="stat"><span>अन्तिम मूल्य (रु.)</span><strong id="ltp">—</strong></div>
+<div class="stat"><span>मूल्य परिवर्तन</span><strong id="change">—</strong></div>
+<div class="stat"><span>ऐतिहासिक रेकर्ड</span><strong id="records">—</strong></div>
 </div>
-<section class="card">
-<h2>१. सेयर छान्नुहोस्</h2>
-<div class="controls">
-<div><label for="symbol">कम्पनी / Symbol</label><input id="symbol" list="symbols" placeholder="जस्तै BENH, NABIL"><datalist id="symbols"></datalist></div>
-<div><label for="mode">विश्लेषण विधि</label><select id="mode"><option value="base">ऐतिहासिक औसत (base)</option><option value="conservative">सावधानीपूर्ण परिदृश्य</option></select></div>
-<button class="primary" id="analyze">विश्लेषण गर्नुहोस्</button><button class="secondary" id="refresh">डेटा अपडेट</button>
 </div>
-<div class="status" id="status">ऐतिहासिक डेटासेट र सार्वजनिक बजार फिड लोड गर्ने प्रयास हुँदैछ…</div>
-</section>
-<section class="card">
-<h2>२. अहिलेको बजार तथ्यांक</h2>
+
+<div class="card">
+<h2>३. सम्भावित मूल्य दायरा</h2>
+<p class="small">यो गणितीय परिदृश्य हो। वास्तविक बजार मूल्य यस दायराभन्दा बाहिर पनि जान सक्छ।</p>
+<div class="tablewrap">
+<table>
+<thead>
+<tr><th>अवधि</th><th>हालको मूल्य</th><th>केन्द्रीय अनुमान</th><th>तल्लो दायरा</th><th>माथिल्लो दायरा</th></tr>
+</thead>
+<tbody id="forecast">
+<tr><td colspan="5">पहिले कम्पनी छान्नुहोस्।</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h2>४. ऐतिहासिक विश्लेषण</h2>
 <div class="grid">
-<div class="stat"><span>अन्तिम मूल्य (रु.)</span><b id="ltp">—</b></div>
-<div class="stat"><span>आजको परिवर्तन</span><b id="todayChange">—</b></div>
-<div class="stat"><span>आजको कारोबार कित्ता</span><b id="volume">—</b></div>
-<div class="stat"><span>कारोबार रकम (रु.)</span><b id="turnover">—</b></div>
-</div><p class="foot" id="liveNote">लाइभ फिड लोड भएपछि यहाँ स्रोतको समय देखिनेछ।</p>
-</section>
-<section class="card">
-<h2>३. सम्भावित मूल्य दायरा — १ हप्तादेखि १२ महिनासम्म</h2>
-<p class="foot">दायरा ऐतिहासिक औसत प्रतिफल र volatility बाट बनेको अनुमान हो। “केन्द्रीय अनुमान” भनेको गणितीय आधार मात्र हो; माथिल्लो/तल्लो दायरा भविष्यमा त्यही सीमाभित्र मूल्य रहने ग्यारेन्टी होइन। NEPSE को १ हप्ता ≈ ५ कारोबार दिन, १५ दिन ≈ १० कारोबार दिन, १ महिना ≈ २१ कारोबार दिन मानिएको छ।</p>
-<div class="horizon" id="forecasts"><div class="forecast">पहिले सेयर छानेर विश्लेषण गर्नुहोस्।</div></div>
-</section>
-<section class="card">
-<h2>४. इतिहासबाट के देखियो?</h2><div class="grid">
-<div class="stat"><span>इतिहासमा गणना गरिएका दिन</span><b id="histCount">—</b></div>
-<div class="stat"><span>औसत दैनिक परिवर्तन</span><b id="mean">—</b></div>
-<div class="stat"><span>दैनिक अस्थिरता</span><b id="volatility">—</b></div>
-<div class="stat"><span>अधिकतम गिरावट (इतिहासमा)</span><b id="drawdown">—</b></div>
+<div class="stat"><span>औसत दैनिक परिवर्तन</span><strong id="mean">—</strong></div>
+<div class="stat"><span>दैनिक उतारचढाव</span><strong id="volatility">—</strong></div>
+<div class="stat"><span>इतिहासको अधिकतम गिरावट</span><strong id="drawdown">—</strong></div>
+<div class="stat"><span>अन्तिम ऐतिहासिक मिति</span><strong id="date">—</strong></div>
 </div>
-<div class="tablewrap"><table><thead><tr><th>अवधि</th><th>केन्द्रीय अनुमान</th><th>मोडेलको तल्लो दायरा</th><th>मोडेलको माथिल्लो दायरा</th><th>ऐतिहासिक आधार</th></tr></thead><tbody id="detailRows"><tr><td colspan="5">डेटा लोड भएपछि देखिन्छ।</td></tr></tbody></table></div>
-</section>
-<section class="card"><h2>५. तथ्य र सूचना कसरी प्रयोग गर्ने?</h2>
-<ul><li>मूल्य र कारोबार: बजारमा गति छ कि छैन भनेर बुझ्न।</li><li>इतिहास: प्रतिफल र उतारचढाव मापन गर्न, तर भविष्य उस्तै हुन्छ भन्ने मान्न होइन।</li><li>कम्पनी सूचना: लाभांश, हकप्रद, बोनस, वित्तीय विवरण, कारोबार रोक्का जस्ता घटना आफैँ आधिकारिक स्रोतमा पुष्टि गर्नुपर्छ।</li><li>कुनै पनि अवधि-लक्ष्यमा “१०% बढ्ने” निश्चितता दिइँदैन। बजारमा gap, liquidity र corporate-action जोखिम हुन्छ।</li></ul>
-<p class="foot">डेटा स्रोतहरू: <a href="https://shubhamnpk.github.io/yonepse/pages/docs.html" target="_blank" rel="noreferrer">YONEPSE सार्वजनिक बजार डेटा</a> र <a href="https://binayabaral.github.io/nepal-market-data/about/" target="_blank" rel="noreferrer">Nepal Market Data ऐतिहासिक CSV</a>। स्रोत वा CORS अवरुद्ध भए डेटा लोड नहुन सक्छ।</p></section>
-<p class="foot">यो अनुसन्धान/शैक्षिक औजार हो, लगानी सल्लाह होइन। वास्तविक पैसा लगानी गर्नु अघि NEPSE/ब्रोकरको स्रोत, कम्पनीको आधिकारिक सूचना, वित्तीय अवस्था र कारोबार लागत जाँच्नुहोस्। यो HTML फाइल आफैँ होस्ट गरिएको एप होइन; मोबाइल ब्राउजरमा फाइल खोल्दा केही ब्राउजरले सुरक्षा कारण बाह्य डेटा fetch रोक्न सक्छन्। स्थिर रूपमा चलाउन वेब होस्ट वा backend/API proxy आवश्यक पर्न सक्छ।</p>
+</div>
+
+<div class="card">
+<h2>डेटा स्रोत</h2>
+<p class="small">
+यस एपले YONEPSE सार्वजनिक फिड र Nepal Market Data को ऐतिहासिक CSV प्रयोग गर्ने प्रयास गर्छ।
+डेटा उपलब्धता र शुद्धता स्रोतमा निर्भर हुन्छ।
+</p>
+<p><a href="https://shubhamnpk.github.io/yonepse/pages/docs.html" target="_blank">YONEPSE डेटा सम्बन्धी जानकारी</a></p>
+<p><a href="https://binayabaral.github.io/nepal-market-data/about/" target="_blank">ऐतिहासिक बजार डेटाको जानकारी</a></p>
+</div>
 </main>
+
 <script>
-const LIVE='https://shubhamnpk.github.io/yonepse/data/nepse_data.json';
-const HIST='https://raw.githubusercontent.com/binayabaral/nepal-market-data/main/data/nepse/';
-const $=id=>document.getElementById(id);let liveRows=[],histCache={},activeSymbol='';
-const num=x=>{let n=Number(x);return Number.isFinite(n)?n:0}, fmt=(x,d=2)=>Number(x).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
-async function json(url){let r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status+' '+url);return r.json()}
-async function loadLive(){
- $('status').textContent='सार्वजनिक बजार फिड तान्दैछ…';
- try{let data=await json(LIVE+'?t='+Date.now());if(!Array.isArray(data))throw Error('फिड ढाँचा फरक छ');liveRows=data;
- $('nStocks').textContent=liveRows.length;
- $('datalist').innerHTML=liveRows.map(s=>`<option value="${esc(s.symbol)}">${esc(s.name||'')}</option>`).join('');
- $('status').textContent='बजार फिड लोड भयो। स्रोतको last_updated र कारोबार स्थिति जाँच्नुहोस्; यो आधिकारिक टिक-लाइभ डेटा होइन।';
- if(!activeSymbol&&liveRows.length){let defaultRow=liveRows.find(s=>s.symbol==='BENH')||liveRows[0];$('symbol').value=defaultRow.symbol;activeSymbol=defaultRow.symbol}
- if(activeSymbol)await analyze();
- }catch(e){$('status').textContent='लाइभ डेटा लोड भएन: '+e.message+'. केहीबेरपछि पुनः प्रयास गर्नुहोस्।';}
+const LIVE_URL =
+"https://shubhamnpk.github.io/yonepse/data/nepse_data.json";
+
+const HISTORY_URL =
+"https://raw.githubusercontent.com/binayabaral/nepal-market-data/main/data/nepse/";
+
+const $ = id => document.getElementById(id);
+
+let marketData = [];
+let historyCache = {};
+
+function number(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : 0;
 }
-async function getHistory(sym){
- if(histCache[sym])return histCache[sym];
- let r=await fetch(HIST+encodeURIComponent(sym)+'.csv?t='+Date.now(),{cache:'no-store'});
- if(!r.ok)throw Error('यो symbol को सार्वजनिक CSV इतिहास भेटिएन (HTTP '+r.status+')');
- let txt=await r.text(), lines=txt.trim().split(/\r?\n/), head=lines.shift().split(',');
- let ix=Object.fromEntries(head.map((h,i)=>[h.trim(),i]));
- let rows=lines.map(line=>{let a=line.split(',');return {date:a[ix.published_date],close:num(a[ix.close]),high:num(a[ix.high]),low:num(a[ix.low]),volume:num(a[ix.traded_quantity]),change:num(a[ix.per_change])}}).filter(r=>r.date&&r.close>0).sort((a,b)=>a.date.localeCompare(b.date));
- histCache[sym]=rows;return rows
+
+function money(value) {
+  return number(value).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 }
-function stats(rows){
- let rets=[];for(let i=1;i<rows.length;i++){if(rows[i-1].close>0)rets.push(Math.log(rows[i].close/rows[i-1].close))}
- if(!rets.length)throw Error('पर्याप्त मूल्य इतिहास छैन');
- let mean=rets.reduce((a,b)=>a+b,0)/rets.length;
- let sd=Math.sqrt(rets.reduce((a,b)=>a+(b-mean)**2,0)/Math.max(1,rets.length-1));
- let peak=rows[0].close,maxdd=0;for(let r of rows){peak=Math.max(peak,r.close);maxdd=Math.min(maxdd,r.close/peak-1)}
- return {rets,mean,sd,maxdd};
+
+function message(text, error = false) {
+  $("status").textContent = text;
+  $("status").className = error ? "status bad" : "status";
 }
-const horizons=[['१ हप्ता',5],['१५ दिन',10],['१ महिना',21],['२ महिना',42],['३ महिना',63],['६ महिना',126],['९ महिना',189],['१२ महिना',252]];
-function forecast(price,st,mode){
- let mean=st.mean, sd=st.sd;
- if(mode==='conservative'){mean=Math.min(0,mean);sd*=1.25}
- return horizons.map(([label,d])=>{
-  let mu=mean*d, sigma=sd*Math.sqrt(d);
-  let center=price*Math.exp(mu), lo=price*Math.exp(mu-1.28*sigma), hi=price*Math.exp(mu+1.28*sigma);
-  return {label,d,center,lo,hi,ret:(center/price-1)*100,loRet:(lo/price-1)*100,hiRet:(hi/price-1)*100};
- });
+
+async function getJSON(url) {
+  const response = await fetch(url, {cache:"no-store"});
+  if (!response.ok) {
+    throw new Error("HTTP " + response.status);
+  }
+  return response.json();
 }
-async function analyze(){
- let sym=$('symbol').value.trim().toUpperCase();if(!sym){$('status').textContent='कृपया symbol छान्नुहोस्।';return}
- activeSymbol=sym;$('status').textContent=sym+' को इतिहास र हालको बजार विवरण मिलाउँदैछ…';
- try{
-  let [rows]=await Promise.all([getHistory(sym)]);
-  let s=stats(rows), live=liveRows.find(x=>String(x.symbol).toUpperCase()===sym);
-  let lastHist=rows[rows.length-1], price=live&&num(live.ltp)>0?num(live.ltp):lastHist.close;
-  $('nRows').textContent=rows.length;$('asof').textContent=lastHist.date;
-  $('ltp').textContent=fmt(price);
-  let ch=live?num(live.percent_change):num(lastHist.change);
-  $('todayChange').textContent=(ch>0?'+':'')+fmt(ch)+'%';$('todayChange').className=ch>0?'pos':ch<0?'neg':'';
-  $('volume').textContent=live?num(live.volume).toLocaleString('en-US'):num(lastHist.volume).toLocaleString('en-US');
-  $('turnover').textContent=live?fmt(num(live.turnover),0):'—';
-  $('liveNote').textContent=live?'Live feed timestamp: '+(live.last_updated||'स्रोतमा timestamp छैन')+'. इतिहास अन्तिम मिति: '+lastHist.date+'.':'Live feed मा symbol भेटिएन; हालको मूल्यका लागि ऐतिहासिक अन्तिम close प्रयोग भयो: '+lastHist.date+'.';
-  $('histCount').textContent=s.rets.length;$('mean').textContent=(Math.exp(s.mean)-1>=0?'+':'')+fmt((Math.exp(s.mean)-1)*100,3)+'% / कारोबार दिन';$('volatility').textContent=fmt(s.sd*100,2)+'% / कारोबार दिन';$('drawdown').textContent=fmt(s.maxdd*100,2)+'%';
-  let fs=forecast(price,s,$('mode').value);
-  $('forecasts').innerHTML=fs.map(f=>`<div class="forecast"><h3>${f.label}</h3><strong>रु. ${fmt(f.center)}</strong><small>केन्द्रीय: <span class="${f.ret>=0?'pos':'neg'}">${f.ret>=0?'+':''}${fmt(f.ret)}%</span></small><small>दायरा: ${fmt(f.lo)} – ${fmt(f.hi)}</small><div class="meter"><i style="width:${Math.max(0,Math.min(100,(f.ret+30)/60*100))}%"></i></div></div>`).join('');
-  $('detailRows').innerHTML=fs.map(f=>`<tr><td>${f.label} (${f.d} कारोबार दिन)</td><td class="${f.ret>=0?'pos':'neg'}">रु. ${fmt(f.center)} (${f.ret>=0?'+':''}${fmt(f.ret)}%)</td><td>रु. ${fmt(f.lo)} (${fmt(f.loRet)}%)</td><td>रु. ${fmt(f.hi)} (+${fmt(f.hiRet)}%)</td><td>${s.rets.length} दैनिक प्रतिफलबाट</td></tr>`).join('');
-  $('status').textContent=sym+' विश्लेषण पूरा। प्रयोग गरिएको इतिहास '+rows.length+' मिति; अनुमान ऐतिहासिक return/volatility मा आधारित हो, buy/sell signal होइन।';
- }catch(e){$('status').textContent='विश्लेषण गर्न सकिएन: '+e.message+'. Symbol spelling जाँच्नुहोस् वा केहीबेरपछि फेरि प्रयास गर्नुहोस्.'}
+
+async function loadCompanies() {
+  message("सार्वजनिक बजार डेटा लोड हुँदैछ...");
+
+  try {
+    const data = await getJSON(LIVE_URL + "?t=" + Date.now());
+
+    let rows = [];
+
+    if (Array.isArray(data)) {
+      rows = data;
+    } else if (data && Array.isArray(data.data)) {
+      rows = data.data;
+    } else if (data && Array.isArray(data.stocks)) {
+      rows = data.stocks;
+    } else {
+      throw new Error("डेटाको ढाँचा अपेक्षाअनुसार छैन");
+    }
+
+    marketData = rows.filter(row =>
+      row && (row.symbol || row.Symbol || row.stock_symbol)
+    );
+
+    $("symbols").innerHTML = marketData.map(row => {
+      const symbol = row.symbol || row.Symbol || row.stock_symbol;
+      const name = row.name || row.company_name || "";
+      return `<option value="${String(symbol).replace(/"/g,"")}">${String(name)}</option>`;
+    }).join("");
+
+    if (!marketData.length) {
+      throw new Error("कम्पनीको सूची खाली छ");
+    }
+
+    message("कम्पनीहरूको सूची लोड भयो। अब Symbol छानेर विश्लेषण गर्नुहोस्।");
+
+    if (!$("symbol").value) {
+      const first = marketData[0];
+      $("symbol").value =
+        first.symbol || first.Symbol || first.stock_symbol;
+    }
+
+  } catch (error) {
+    message(
+      "कम्पनीको डेटा लोड भएन। सम्भावित कारण: सार्वजनिक स्रोत बन्द छ, डेटा ढाँचा परिवर्तन भएको छ वा ब्राउजरले अनुरोध रोकेको छ। विवरण: " + error.message,
+      true
+    );
+  }
 }
-function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-$('analyze').onclick=analyze;$('refresh').onclick=loadLive;$('mode').onchange=()=>activeSymbol&&analyze();$('symbol').addEventListener('keydown',e=>{if(e.key==='Enter')analyze()});
-loadLive();setInterval(loadLive,30*60*1000);
-</script></body></html>
+
+async function loadHistory(symbol) {
+  if (historyCache[symbol]) {
+    return historyCache[symbol];
+  }
+
+  const url = HISTORY_URL + encodeURIComponent(symbol) + ".csv";
+
+  const response = await fetch(url + "?t=" + Date.now(), {
+    cache:"no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error("यो Symbol को ऐतिहासिक CSV भेटिएन");
+  }
+
+  const text = await response.text();
+  const lines = text.trim().split(/\r?\n/);
+
+  if (lines.length < 3) {
+    throw new Error("ऐतिहासिक डेटा पर्याप्त छैन");
+  }
+
+  const headers = lines.shift().split(",").map(x => x.trim());
+
+  const findColumn = names =>
+    headers.findIndex(h => names.includes(h.toLowerCase()));
+
+  const dateIndex = findColumn(["published_date","date"]);
+  const closeIndex = findColumn(["close","closing_price"]);
+  const changeIndex = findColumn(["per_change","percent_change"]);
+  const highIndex = findColumn(["high"]);
+  const lowIndex = findColumn(["low"]);
+
+  if (dateIndex < 0 || closeIndex < 0) {
+    throw new Error("CSV मा आवश्यक मिति वा मूल्यको स्तम्भ भेटिएन");
+  }
+
+  const records = lines.map(line => {
+    const cols = line.split(",");
+    return {
+      date: cols[dateIndex],
+      close: number(cols[closeIndex]),
+      change: changeIndex >= 0 ? number(cols[changeIndex]) : 0,
+      high: highIndex >= 0 ? number(cols[highIndex]) : 0,
+      low: lowIndex >= 0 ? number(cols[lowIndex]) : 0
+    };
+  }).filter(row => row.date && row.close > 0)
+    .sort((a,b) => a.date.localeCompare(b.date));
+
+  if (records.length < 2) {
+    throw new Error("गणनाका लागि पर्याप्त मूल्य इतिहास छैन");
+  }
+
+  historyCache[symbol] = records;
+  return records;
+}
+
+function calculate(records) {
+  const returns = [];
+
+  for (let i = 1; i < records.length; i++) {
+    const previous = records[i-1].close;
+    const current = records[i].close;
+
+    if (previous > 0 && current > 0) {
+      returns.push(Math.log(current / previous));
+    }
+  }
+
+  if (!returns.length) {
+    throw new Error("प्रतिफल गणना गर्न सकिएन");
+  }
+
+  const mean =
+    returns.reduce((sum, x) => sum + x, 0) / returns.length;
+
+  const variance =
+    returns.reduce((sum, x) => sum + Math.pow(x - mean, 2), 0) /
+    Math.max(1, returns.length - 1);
+
+  const sd = Math.sqrt(variance);
+
+  let peak = records[0].close;
+  let drawdown = 0;
+
+  records.forEach(row => {
+    peak = Math.max(peak, row.close);
+    drawdown = Math.min(drawdown, row.close / peak - 1);
+  });
+
+  return {mean, sd, drawdown, count:returns.length};
+}
+
+async function analyze() {
+  const symbol = $("symbol").value.trim().toUpperCase();
+
+  if (!symbol) {
+    message("कृपया कम्पनीको Symbol लेख्नुहोस्।", true);
+    return;
+  }
+
+  message(symbol + " को ऐतिहासिक डेटा खोजिँदैछ...");
+
+  try {
+    const records = await loadHistory(symbol);
+    const stats = calculate(records);
+    const last = records[records.length - 1];
+
+    const market = marketData.find(row =>
+      String(row.symbol || row.Symbol || row.stock_symbol).toUpperCase()
+      === symbol
+    );
+
+    const currentPrice = market
+      ? number(market.ltp || market.LTP || market.close) || last.close
+      : last.close;
+
+    $("company").textContent =
+      market ? (market.name || market.company_name || symbol) : symbol;
+
+    $("ltp").textContent = "रु. " + money(currentPrice);
+    $("change").textContent =
+      (market
+        ? number(market.percent_change || market.change)
+        : last.change) + "%";
+
+    $("records").textContent = records.length;
+    $("mean").textContent =
+      ((Math.exp(stats.mean)-1)*100).toFixed(3) + "%";
+
+    $("volatility").textContent =
+      (stats.sd*100).toFixed(2) + "%";
+
+    $("drawdown").textContent =
+      (stats.drawdown*100).toFixed(2) + "%";
+
+    $("date").textContent = last.date;
+
+    const horizons = [
+      ["१ हप्ता",5],
+      ["१५ दिन",10],
+      ["१ महिना",21],
+      ["२ महिना",42],
+      ["३ महिना",63],
+      ["६ महिना",126],
+      ["९ महिना",189],
+      ["१२ महिना",252]
+    ];
+
+    let mean = stats.mean;
+    let sd = stats.sd;
+
+    if ($("mode").value === "safe") {
+      mean = Math.min(0, mean);
+      sd = sd * 1.25;
+    }
+
+    $("forecast").innerHTML = horizons.map(([label,days]) => {
+      const mu = mean * days;
+      const sigma = sd * Math.sqrt(days);
+
+      const center = currentPrice * Math.exp(mu);
+      const low = currentPrice * Math.exp(mu - 1.28*sigma);
+      const high = currentPrice * Math.exp(mu + 1.28*sigma);
+
+      return `<tr>
+        <td>${label}</td>
+        <td>रु. ${money(currentPrice)}</td>
+        <td>रु. ${money(center)}</td>
+        <td>रु. ${money(low)}</td>
+        <td>रु. ${money(high)}</td>
+      </tr>`;
+    }).join("");
+
+    message(
+      symbol + " को विश्लेषण पूरा भयो। " +
+      records.length +
+      " ऐतिहासिक रेकर्ड प्रयोग गरियो। यो अनुमान हो, ग्यारेन्टी होइन।"
+    );
+
+  } catch (error) {
+    message(
+      "डेटा विश्लेषण हुन सकेन: " + error.message +
+      ". Symbol सही छ कि जाँच्नुहोस्। स्रोतमा डेटा नभएमा विश्लेषण सम्भव हुँदैन।",
+      true
+    );
+  }
+}
+
+$("loadBtn").addEventListener("click", analyze);
+$("refreshBtn").addEventListener("click", async () => {
+  historyCache = {};
+  await loadCompanies();
+});
+
+$("symbol").addEventListener("keydown", event => {
+  if (event.key === "Enter") analyze();
+});
+
+loadCompanies();
+setInterval(loadCompanies, 30 * 60 * 1000);
+</script>
+</body>
+</html>
